@@ -1,0 +1,55 @@
+﻿<Window x:Class="UDP_Messenger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UDP_Messenger"
+        mc:Ignorable="d"
+        Title="UDP Messenger" Height="450" Width="450"
+        Closing="Window_Closing">
+    <Window.CommandBindings>
+        <CommandBinding Command="Close" Executed="CommandBinding_Close_Executed" />
+    </Window.CommandBindings>
+
+    <Grid>
+        <Menu>
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit" Command="Close" InputGestureText="Alt+F4">
+                    <MenuItem.Icon>
+                        <Image Source="/res/icons/Exit_16x.png" />
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>Close the application.</MenuItem.ToolTip>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="_Copy IP address of last sender" IsCheckable="True" IsChecked="{Binding IsChecked}">
+                    <MenuItem.ToolTip>Copy IP address of the last sender as address to send to.</MenuItem.ToolTip>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Margin="10,30,10,10" >
+            <ScrollViewer x:Name="Received_TextBlock_ScrollViewer" Height="260" ScrollChanged="Received_TextBlock_ScrollViewer_ScrollChanged">
+                <TextBlock 
+                    Text="{Binding ReceivedMessages, UpdateSourceTrigger=PropertyChanged}" 
+                    TextWrapping="Wrap"
+                    Loaded="Received_TextBlock_Loaded" />
+            </ScrollViewer>
+            <Separator />
+            <DockPanel Margin="0,5,0,10">
+                <Label Content="_IP" MinWidth="50" Target="{Binding ElementName=IP_TextBox}" />
+                <TextBox x:Name="IP_TextBox" Text="{Binding IPAddress, UpdateSourceTrigger=PropertyChanged}" MinWidth="150" />
+                <TextBlock Text="Lokale IP:" Foreground="Gray" Margin="5" />
+                <TextBlock x:Name="OwnIP_TextBlock" Foreground="Gray" Margin="5" Loaded="OwnIP_TextBlock_Loaded" />
+            </DockPanel>
+            <DockPanel>
+                <Label Content="_Msg" MinWidth="50" Target="{Binding ElementName=Message_TextBox}" />
+                <TextBox 
+                    x:Name="Message_TextBox" 
+                    Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" 
+                    KeyDown="OnKeyDownHandler" />
+            </DockPanel>
+            <Button x:Name="Send_Button" Content="_Send" Click="Send_Button_Click" Margin="10" Width="100" IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+    </Grid>
+</Window>
